@@ -1,26 +1,17 @@
 package com.test.musicfinderpro.adapters;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.test.musicfinderpro.DetailActivity;
-import com.test.musicfinderpro.MainActivity;
 import com.test.musicfinderpro.R;
-import com.test.musicfinderpro.Tab1;
-import com.test.musicfinderpro.Tab2;
 import com.test.musicfinderpro.model.Trending;
 
 import java.util.List;
@@ -82,7 +73,7 @@ public class TopSingleAdapter extends RecyclerView.Adapter<TopSingleAdapter.TopS
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(v.getContext(), results.get(getAdapterPosition()).getStrArtist(), Toast.LENGTH_SHORT).show();
+
                  //playMusic(results.get(getAdapterPosition()).getIdAlbum());
             }
 

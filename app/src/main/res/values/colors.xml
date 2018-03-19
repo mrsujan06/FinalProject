@@ -5,5 +5,8 @@
     <color name="colorAccent">#52b7f8</color>
     <color name="backgroundFragment">#2b2b2b</color>
     <color name = "black">#0a0909</color>
+    <color name = "white">#fdfafa</color>
+    <color name = "cardViewColor">#817f7f</color>
+
 
 </resources>

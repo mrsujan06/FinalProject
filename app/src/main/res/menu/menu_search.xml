@@ -2,11 +2,13 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <item
-        android:id="@+id/search"
+        android:id="@+id/searchView"
         android:icon="@android:drawable/ic_menu_search"
         android:title="search"
-        app:actionViewClass="android.widget.SearchView"
+        android:hint="Artist name"
+        app:actionViewClass="android.widget.searchview"
         app:showAsAction="always"></item>
 
 </menu>

@@ -1,23 +1,40 @@
-package com.test.musicfinderpro;
+package com.test.musicfinderpro.tabs;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.test.musicfinderpro.R;
+import com.test.musicfinderpro.adapters.ArtistAdaperItune;
+import com.test.musicfinderpro.adapters.ArtistAdapter;
+import com.test.musicfinderpro.api.ApiObservableArtistService;
+import com.test.musicfinderpro.model.ResultResponse;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Tab5.OnFragmentInteractionListener} interface
+ * {@link MusicPreviewTab4.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Tab5#newInstance} factory method to
+ * Use the {@link MusicPreviewTab4#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Tab5 extends Fragment {
+public class MusicPreviewTab4 extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -27,9 +44,14 @@ public class Tab5 extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    ArtistAdapter artistAdapter;
+    RecyclerView recyclerView10;
+    ApiObservableArtistService reqInterface;
+    View view;
+
     private OnFragmentInteractionListener mListener;
 
-    public Tab5() {
+    public MusicPreviewTab4() {
         // Required empty public constructor
     }
 
@@ -39,11 +61,11 @@ public class Tab5 extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Tab5.
+     * @return A new instance of fragment MusicPreviewTab4.
      */
     // TODO: Rename and change types and number of parameters
-    public static Tab5 newInstance(String param1, String param2) {
-        Tab5 fragment = new Tab5();
+    public static MusicPreviewTab4 newInstance(String param1, String param2) {
+        MusicPreviewTab4 fragment = new MusicPreviewTab4();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,7 +86,16 @@ public class Tab5 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tab5, container, false);
+        view = inflater.inflate(R.layout.fragment_music_preview_tab4, container, false);
+        recyclerView10 = view.findViewById(R.id.recyclerView10);
+
+
+        recyclerView10.setAdapter(artistAdapter);
+
+        networkCallSearchArtist();
+        return view;
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -104,5 +135,34 @@ public class Tab5 extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void networkCallSearchArtist(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://itunes.apple.com/")
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        reqInterface = retrofit.create(ApiObservableArtistService.class);
+        reqInterface.getPopData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ResultResponse>() {
+
+                    @Override
+                    public void accept(ResultResponse resultResponse) throws Exception {
+
+                        recyclerView10.setAdapter(new ArtistAdaperItune(resultResponse.getResults() ,getActivity()));
+                        recyclerView10.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        Toast.makeText(getActivity(), resultResponse.getResults().get(0).getArtistName(), Toast.LENGTH_LONG).show();
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundFragment"
-    tools:context="com.test.musicfinderpro.Tab5">
+    tools:context="com.test.musicfinderpro.tabs.Tab5">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

@@ -3,11 +3,13 @@ package com.test.musicfinderpro.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by Sujan on 13/03/2018.
  */
 
-public class Artist {
+public class Artist implements Serializable{
 
     @SerializedName("idArtist")
     @Expose

@@ -1,7 +1,6 @@
-package com.test.musicfinderpro;
+package com.test.musicfinderpro.tabs;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,15 +12,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Toast;
 
+import com.test.musicfinderpro.R;
 import com.test.musicfinderpro.adapters.SlideShowAdapter;
 
 import com.test.musicfinderpro.adapters.TopAlbumAdapter;
 import com.test.musicfinderpro.adapters.TopSingleAdapter;
 import com.test.musicfinderpro.api.ApiObservableArtistService;
-import com.test.musicfinderpro.model.ArtistResponse;
 import com.test.musicfinderpro.model.TrendingResponse;
 
 import java.util.Timer;
@@ -39,12 +36,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Tab1.OnFragmentInteractionListener} interface
+ * {@link HomeTab1.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Tab1#newInstance} factory method to
+ * Use the {@link HomeTab1#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Tab1 extends Fragment  {
+public class HomeTab1 extends Fragment  {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -68,7 +65,7 @@ public class Tab1 extends Fragment  {
 
     private OnFragmentInteractionListener mListener;
 
-    public Tab1() {
+    public HomeTab1() {
         // Required empty public constructor
     }
 
@@ -78,11 +75,11 @@ public class Tab1 extends Fragment  {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Tab1.
+     * @return A new instance of fragment HomeTab1.
      */
     // TODO: Rename and change types and number of parameters
-    public static Tab1 newInstance(String param1, String param2) {
-        Tab1 fragment = new Tab1();
+    public static HomeTab1 newInstance(String param1, String param2) {
+        HomeTab1 fragment = new HomeTab1();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -107,7 +104,7 @@ public class Tab1 extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_tab1, container, false);
+        view = inflater.inflate(R.layout.fragment_home_tab1, container, false);
 
         //SlideShow
         viewPager = view.findViewById(R.id.viewPager_id);
@@ -161,7 +158,7 @@ public class Tab1 extends Fragment  {
 
                 handler.post(runnable);
             }
-        },4000,4000);
+        },3500,3500);
 
 
         return view;
@@ -229,12 +226,12 @@ public class Tab1 extends Fragment  {
 
                         recyclerView.setAdapter(new TopAlbumAdapter(trendingResponse.getTrending() , getActivity()));
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-                        Toast.makeText(getActivity(), trendingResponse.getTrending().get(0).getStrArtist(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getActivity(), trendingResponse.getTrending().get(0).getStrArtist(), Toast.LENGTH_SHORT).show();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -260,7 +257,7 @@ public class Tab1 extends Fragment  {
 
                         recyclerView2.setAdapter(new TopSingleAdapter(trendingResponse.getTrending() , getActivity()));
                         recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-                        Toast.makeText(getActivity(), trendingResponse.getTrending().get(0).getStrArtist(), Toast.LENGTH_SHORT).show();
+                    //    Toast.makeText(getActivity(), trendingResponse.getTrending().get(0).getStrArtist(), Toast.LENGTH_SHORT).show();
 
                     }
                 }, new Consumer<Throwable>() {
