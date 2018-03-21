@@ -1,9 +1,13 @@
 package com.test.musicfinderpro.tabs;
 
+import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,13 +18,18 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.widget.RxSearchView;
+import com.test.musicfinderpro.DetailActivity;
 import com.test.musicfinderpro.R;
+import com.test.musicfinderpro.adapters.AlbumAdapter;
+import com.test.musicfinderpro.adapters.PagerAdapter;
 import com.test.musicfinderpro.adapters.SearchArtistAdapter;
 import com.test.musicfinderpro.api.ApiObservableArtistService;
+import com.test.musicfinderpro.model.AlbumResponse;
 import com.test.musicfinderpro.model.ArtistResponse;
 
 import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
 import butterknife.Unbinder;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -49,18 +58,20 @@ public class SearchArtistTab2 extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    SearchView mSearchView;
+    @BindView(R.id.recyclerViewAlbums) RecyclerView recyclerViewAlbums;
+    ApiObservableArtistService reqInterface3;
+
+    static SearchView mSearchView;
     RecyclerView artistList;
 
     ArtistResponse artistResponse;
-
     private Unbinder unbinder;
     private ApiObservableArtistService apiObservableArtistService;
     SearchArtistAdapter searchArtistAdapter;
     private View view;
     boolean isDataLoaded = false;
     private SwipeRefreshLayout strl;
-
+    PagerAdapter pagerAdapter;
 
 
     private OnFragmentInteractionListener mListener;
@@ -86,31 +97,48 @@ public class SearchArtistTab2 extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+       getChildFragmentManager().addOnBackStackChangedListener(new android.support.v4.app.FragmentManager.OnBackStackChangedListener() {
+           @Override
+           public void onBackStackChanged() {
 
+               if (getView()!=null){
+                   getView().setFocusableInTouchMode(true);
+                   getView().requestFocus();
+               }
 
-
-//        EditText searchEditText = (EditText) mSearchView.findViewById(android.support.v7.appcompat.R.id.);
-//        searchEditText.setTextColor(getResources().getColor(R.color.white));
-//        searchEditText.setHintTextColor(getResources().getColor(R.color.white));
-
+           }
+       });
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.search_artist_tab2, container, false);
-        //strl = view.findViewById(R.id.swipe2Refresh);
-      //  strl.setRefreshing(true);
-
         mSearchView = view.findViewById(R.id.artistSearchView);
         artistList = view.findViewById(R.id.artistList);
         artistList.setLayoutManager(new LinearLayoutManager(getActivity()));
         artistList.setAdapter(searchArtistAdapter = new SearchArtistAdapter());
+        mSearchView.getQuery();
+//        SearchView.OnQueryTextListener queryTextListener =(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                getInput(query);
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//
+//                return false;
+//            }
+//        });
+//
+//        mSearchView.setOnQueryTextListener(queryTextListener);
+        mSearchView.setFocusable(true);
 
+        retroCall();
         loadData();
-        searchArtistAdapter.notifyDataSetChanged();
 
         return view;
     }
@@ -152,17 +180,17 @@ public class SearchArtistTab2 extends Fragment {
         super.onDestroy();
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser == true) {
+            loadData();
+        }
+    }
 
     //Method to load Artist from Api
-    public void loadData(){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.theaudiodb.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-
-        apiObservableArtistService = retrofit.create(ApiObservableArtistService.class);
-
+    public void loadData() {
         RxSearchView.queryTextChanges(mSearchView)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 // .subscribeOn(AndroidSchedulers.mainThread())
@@ -179,7 +207,10 @@ public class SearchArtistTab2 extends Fragment {
                 .switchMap(new Function<CharSequence, ObservableSource<ArtistResponse>>() {
                     @Override
                     public ObservableSource<ArtistResponse> apply(CharSequence query) throws Exception {
-                        return  apiObservableArtistService.searchArtist(query.toString());
+                       return apiObservableArtistService.searchArtist(query.toString());
+
+
+
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -189,6 +220,9 @@ public class SearchArtistTab2 extends Fragment {
                                public void accept(ArtistResponse response) throws Exception {
 
                                    searchArtistAdapter.addArtistResponses(response.getArtists());
+
+
+
                                }
                            },
                         new Consumer<Throwable>() {
@@ -197,9 +231,74 @@ public class SearchArtistTab2 extends Fragment {
                                 Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
+
+
+
+    }
+
+    public void retroCall() {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.theaudiodb.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+
+        apiObservableArtistService = retrofit.create(ApiObservableArtistService.class);
+
+    }
+
+    //Artist Albums detail page
+    public void networkCallForAlbums(String artistName) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.theaudiodb.com")
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        reqInterface3 = retrofit.create(ApiObservableArtistService.class);
+        reqInterface3.searchAlbums(artistName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<AlbumResponse>() {
+
+                    @Override
+                    public void accept(AlbumResponse albumResponse) throws Exception {
+
+                        if (recyclerViewAlbums != null) {
+                            recyclerViewAlbums.setAdapter(new AlbumAdapter(albumResponse.getAlbum(), getActivity()));
+                            recyclerViewAlbums.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                        }
+                        //   Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                    }
+                });
+
+    }
+
+    public void getInput(String searchText)
+    {
+        Intent in = new Intent(getContext(), DetailActivity.class);
+        in.putExtra("searchQuery", searchText);
+        startActivity(in);
     }
 
 
+    public SearchView getmSearchView() {
+        return mSearchView;
+    }
+
+public void updateFrame() {
+    Fragment currentFragment = this;
+    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+    fragmentTransaction.detach(currentFragment);
+    fragmentTransaction.attach(currentFragment);
+    fragmentTransaction.commit();
+}
 
 }
 

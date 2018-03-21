@@ -25,7 +25,7 @@ public class ArtistAdaperItune extends RecyclerView.Adapter<ArtistAdaperItune.Ar
     List<Result> results;
     Context context;
 
-    public ArtistAdaperItune(List<Result> results , Context context ) {
+    public ArtistAdaperItune(List<Result> results, Context context) {
         this.results = results;
         this.context = context;
     }
@@ -41,6 +41,7 @@ public class ArtistAdaperItune extends RecyclerView.Adapter<ArtistAdaperItune.Ar
         holder.bind(position);
 
     }
+
     @Override
     public int getItemCount() {
         return results.size();
@@ -80,9 +81,7 @@ public class ArtistAdaperItune extends RecyclerView.Adapter<ArtistAdaperItune.Ar
 
         @Override
         public void onClick(View v) {
-
-
-           // Toast.makeText(v.getContext(), results.get(getAdapterPosition()).getArtistName(), Toast.LENGTH_SHORT).show();
+            // Toast.makeText(v.getContext(), results.get(getAdapterPosition()).getArtistName(), Toast.LENGTH_SHORT).show();
             playMusic(results.get(getAdapterPosition()).getPreviewUrl());
         }
 
@@ -91,7 +90,7 @@ public class ArtistAdaperItune extends RecyclerView.Adapter<ArtistAdaperItune.Ar
     private void playMusic(String url) {
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        intent.setDataAndType(uri, "audio/m4a");
+        intent.setDataAndType(uri, "audio/mpeg3");
         //intent.setDataAndType(uri, "audio/*");
         context.startActivity(intent);
     }

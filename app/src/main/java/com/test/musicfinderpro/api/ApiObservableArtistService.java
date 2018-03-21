@@ -24,7 +24,7 @@ public interface ApiObservableArtistService {
     @GET("api/v1/json/195003/search.php")
     Observable<ArtistResponse> searchArtist(@Query("s") String artistName);
 
-    @GET ("api/v1/json/195003/searchalbum.php?")
+    @GET("api/v1/json/195003/searchalbum.php?")
     Observable<AlbumResponse> searchAlbums(@Query("s") String artistName);
 
     //Artist info
@@ -42,10 +42,7 @@ public interface ApiObservableArtistService {
     Observable<ResultResponse> getPopData();
 
     @GET("api/v1/json/195003/search.php")
-    retrofit2.Call <ArtistResponse> search (@Query("s") String artistName);
-
-
-
+    retrofit2.Call<ArtistResponse> search(@Query("s") String artistName);
 
 
 }

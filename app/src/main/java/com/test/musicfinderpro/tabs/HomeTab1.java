@@ -41,7 +41,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Use the {@link HomeTab1#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeTab1 extends Fragment  {
+public class HomeTab1 extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -56,7 +56,7 @@ public class HomeTab1 extends Fragment  {
     Handler handler;
     Runnable runnable;
     Timer timer;
-    Toolbar toolbar , toolbar2;
+    Toolbar toolbar, toolbar2;
     View view;
 
     // TODO: Rename and change types of parameters
@@ -94,8 +94,6 @@ public class HomeTab1 extends Fragment  {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
 
 
     }
@@ -138,15 +136,15 @@ public class HomeTab1 extends Fragment  {
 
                 int i = viewPager.getCurrentItem();
 
-                if (i==adapter.images.length-1){
+                if (i == adapter.images.length - 1) {
 
-                    i=0;
-                    viewPager.setCurrentItem(i,true);
+                    i = 0;
+                    viewPager.setCurrentItem(i, true);
 
-                }else {
+                } else {
 
                     i++;
-                    viewPager.setCurrentItem(i,true);
+                    viewPager.setCurrentItem(i, true);
                 }
             }
         };
@@ -158,7 +156,7 @@ public class HomeTab1 extends Fragment  {
 
                 handler.post(runnable);
             }
-        },3500,3500);
+        }, 3500, 3500);
 
 
         return view;
@@ -187,8 +185,6 @@ public class HomeTab1 extends Fragment  {
         super.onDetach();
         mListener = null;
     }
-
-
 
 
     /**
@@ -224,14 +220,14 @@ public class HomeTab1 extends Fragment  {
                     @Override
                     public void accept(TrendingResponse trendingResponse) throws Exception {
 
-                        recyclerView.setAdapter(new TopAlbumAdapter(trendingResponse.getTrending() , getActivity()));
+                        recyclerView.setAdapter(new TopAlbumAdapter(trendingResponse.getTrending(), getActivity()));
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-                      //  Toast.makeText(getActivity(), trendingResponse.getTrending().get(0).getStrArtist(), Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(getActivity(), trendingResponse.getTrending().get(0).getStrArtist(), Toast.LENGTH_SHORT).show();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                      //  Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -255,9 +251,9 @@ public class HomeTab1 extends Fragment  {
                     @Override
                     public void accept(TrendingResponse trendingResponse) throws Exception {
 
-                        recyclerView2.setAdapter(new TopSingleAdapter(trendingResponse.getTrending() , getActivity()));
+                        recyclerView2.setAdapter(new TopSingleAdapter(trendingResponse.getTrending(), getActivity()));
                         recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-                    //    Toast.makeText(getActivity(), trendingResponse.getTrending().get(0).getStrArtist(), Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(getActivity(), trendingResponse.getTrending().get(0).getStrArtist(), Toast.LENGTH_SHORT).show();
 
                     }
                 }, new Consumer<Throwable>() {
@@ -266,10 +262,6 @@ public class HomeTab1 extends Fragment  {
                     }
                 });
     }
-
-
-
-
 
 
 }

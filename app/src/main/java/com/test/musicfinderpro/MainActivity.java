@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -34,15 +35,17 @@ import java.net.InetAddress;
 
 import butterknife.Unbinder;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener ,HomeTab1.OnFragmentInteractionListener,AlbumTab3.OnFragmentInteractionListener,MusicPreviewTab4.OnFragmentInteractionListener ,  SearchArtistTab2.OnFragmentInteractionListener , Tab5.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeTab1.OnFragmentInteractionListener, AlbumTab3.OnFragmentInteractionListener, MusicPreviewTab4.OnFragmentInteractionListener, SearchArtistTab2.OnFragmentInteractionListener, Tab5.OnFragmentInteractionListener {
 
     SearchView searchView;
     RecyclerView recyclerView12;
     ArtistResponse artistResponse;
+    ViewPager viewPager;
 
     private Unbinder unbinder;
     private ApiObservableArtistService apiObservableArtistService;
     SearchArtistAdapter searchArtistAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,26 +74,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-       settingUpTabLayout();
-       isInternetAvailable();
-       isNetworkConnected();
+        settingUpTabLayout();
+        isInternetAvailable();
+        isNetworkConnected();
 
 
     }
 
     //Setting up view pager
-    public void settingUpTabLayout(){
+    public void settingUpTabLayout() {
 
         TabLayout tabLayout = findViewById(R.id.tablayout);
-        tabLayout.addTab(tabLayout.newTab().setText("HomeTab1"));
+        tabLayout.addTab(tabLayout.newTab().setText("Home"));
         tabLayout.addTab(tabLayout.newTab().setText("Artist"));
         tabLayout.addTab(tabLayout.newTab().setText("Albums"));
         tabLayout.addTab(tabLayout.newTab().setText("Music Preview"));
         tabLayout.addTab(tabLayout.newTab().setText("Videos"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPager = findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        viewPager = findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
@@ -98,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+
+
             }
 
             @Override

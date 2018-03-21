@@ -20,12 +20,12 @@ import java.util.List;
  * Created by Sujan on 17/03/2018.
  */
 
-public class AlbumAdapter extends  RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
+public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
 
     List<Album> results;
     Context context;
 
-    public AlbumAdapter(List<Album> results , Context context ) {
+    public AlbumAdapter(List<Album> results, Context context) {
         this.results = results;
         this.context = context;
     }

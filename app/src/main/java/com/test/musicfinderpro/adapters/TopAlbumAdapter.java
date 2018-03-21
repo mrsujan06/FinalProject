@@ -21,12 +21,12 @@ import java.util.List;
  * Created by Sujan on 15/03/2018.
  */
 
-public class TopAlbumAdapter  extends RecyclerView.Adapter <TopAlbumAdapter.TopAlbumViewHolder>{
+public class TopAlbumAdapter extends RecyclerView.Adapter<TopAlbumAdapter.TopAlbumViewHolder> {
 
     Context context;
     List<Trending> results;
 
-    public TopAlbumAdapter(List<Trending> results , Context context) {
+    public TopAlbumAdapter(List<Trending> results, Context context) {
         this.results = results;
         this.context = context;
     }

@@ -43,8 +43,8 @@ public class AlbumTab3 extends Fragment {
     private String mParam2;
     private ImageView image;
     AlbumAdapter albumAdapter;
-    RecyclerView recyclerView3 , recyclerView4 , recyclerView5 , recyclerView6;
-    RecyclerView recyclerView7 , recyclerView8 , recyclerView9 ;
+    RecyclerView recyclerView3, recyclerView4, recyclerView5, recyclerView6;
+    RecyclerView recyclerView7, recyclerView8, recyclerView9;
     ApiObservableArtistService reqInterface3;
     View view;
 
@@ -85,7 +85,7 @@ public class AlbumTab3 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view =  inflater.inflate(R.layout.fragment_album_tab3, container, false);
+        view = inflater.inflate(R.layout.fragment_album_tab3, container, false);
 
         recyclerView3 = view.findViewById(R.id.recyclerView3);
         recyclerView4 = view.findViewById(R.id.recyclerView4);
@@ -97,13 +97,13 @@ public class AlbumTab3 extends Fragment {
 
 
         recyclerView3.setAdapter(albumAdapter);
-        networkCallSearchAlbum("taylor swift");
+        networkCallSearchAlbum("Ed Sheeran");
         networkCallSearchAlbum2("bruno mars");
-        networkCallSearchAlbum3("beyonce");
-        networkCallSearchAlbum4("Ed Sheeran");
+        networkCallSearchAlbum3("the weeknd");
+        networkCallSearchAlbum4("taylor swift");
         networkCallSearchAlbum5("eminem");
         networkCallSearchAlbum6("coldplay");
-        networkCallSearchAlbum7("the weeknd");
+        networkCallSearchAlbum7("beyonce");
 
 
         return view;
@@ -166,11 +166,11 @@ public class AlbumTab3 extends Fragment {
                     @Override
                     public void accept(AlbumResponse albumResponse) throws Exception {
 
-                        if(recyclerView3 != null) {
+                        if (recyclerView3 != null) {
                             recyclerView3.setAdapter(new AlbumAdapter(albumResponse.getAlbum(), getActivity()));
                             recyclerView3.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                         }
-                     //   Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
 
                     }
                 }, new Consumer<Throwable>() {
@@ -200,7 +200,7 @@ public class AlbumTab3 extends Fragment {
                         recyclerView4.setAdapter(new AlbumAdapter(albumResponse.getAlbum(), getActivity()));
                         recyclerView4.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-                    //    Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
 
                     }
                 }, new Consumer<Throwable>() {
@@ -230,7 +230,7 @@ public class AlbumTab3 extends Fragment {
                         recyclerView5.setAdapter(new AlbumAdapter(albumResponse.getAlbum(), getActivity()));
                         recyclerView5.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-                      //  Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
 
                     }
                 }, new Consumer<Throwable>() {
@@ -260,7 +260,7 @@ public class AlbumTab3 extends Fragment {
                         recyclerView6.setAdapter(new AlbumAdapter(albumResponse.getAlbum(), getActivity()));
                         recyclerView6.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-                  //      Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
+                        //      Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
 
                     }
                 }, new Consumer<Throwable>() {
@@ -290,7 +290,7 @@ public class AlbumTab3 extends Fragment {
                         recyclerView7.setAdapter(new AlbumAdapter(albumResponse.getAlbum(), getActivity()));
                         recyclerView7.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-                  //      Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
+                        //      Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
 
                     }
                 }, new Consumer<Throwable>() {
@@ -320,7 +320,7 @@ public class AlbumTab3 extends Fragment {
                         recyclerView8.setAdapter(new AlbumAdapter(albumResponse.getAlbum(), getActivity()));
                         recyclerView8.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-                     //   Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
 
                     }
                 }, new Consumer<Throwable>() {
@@ -350,7 +350,7 @@ public class AlbumTab3 extends Fragment {
                         recyclerView9.setAdapter(new AlbumAdapter(albumResponse.getAlbum(), getActivity()));
                         recyclerView9.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-                  //      Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
+                        //      Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
 
                     }
                 }, new Consumer<Throwable>() {

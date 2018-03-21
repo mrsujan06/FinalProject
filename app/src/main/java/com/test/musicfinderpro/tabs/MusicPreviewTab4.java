@@ -137,7 +137,7 @@ public class MusicPreviewTab4 extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void networkCallSearchArtist(){
+    public void networkCallSearchArtist() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://itunes.apple.com/")
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -153,7 +153,7 @@ public class MusicPreviewTab4 extends Fragment {
                     @Override
                     public void accept(ResultResponse resultResponse) throws Exception {
 
-                        recyclerView10.setAdapter(new ArtistAdaperItune(resultResponse.getResults() ,getActivity()));
+                        recyclerView10.setAdapter(new ArtistAdaperItune(resultResponse.getResults(), getActivity()));
                         recyclerView10.setLayoutManager(new LinearLayoutManager(getActivity()));
                         Toast.makeText(getActivity(), resultResponse.getResults().get(0).getArtistName(), Toast.LENGTH_LONG).show();
 

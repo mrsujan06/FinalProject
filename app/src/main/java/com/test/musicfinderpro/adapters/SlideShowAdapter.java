@@ -46,7 +46,7 @@ public class SlideShowAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object object) {
 
-        return (view==(LinearLayout)object);
+        return (view == (LinearLayout) object);
 
     }
 
@@ -55,7 +55,7 @@ public class SlideShowAdapter extends PagerAdapter {
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View view = inflater.inflate(R.layout.slideshow_layout,container,false);
+        View view = inflater.inflate(R.layout.slideshow_layout, container, false);
 
         ImageView img = view.findViewById(R.id.imageView_id);
 
@@ -65,7 +65,7 @@ public class SlideShowAdapter extends PagerAdapter {
             @Override
             public void onClick(View view) {
 
-                Snackbar.make( view ,"Image " + ( position + 1 ) , Snackbar.LENGTH_LONG ).show();
+                Snackbar.make(view, "Image " + (position + 1), Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -78,7 +78,7 @@ public class SlideShowAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
 
-        container.removeView((LinearLayout)object);
+        container.removeView((LinearLayout) object);
 
     }
 

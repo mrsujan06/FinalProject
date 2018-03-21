@@ -18,8 +18,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
     int mNoOfTabs;
 
-    public PagerAdapter(FragmentManager fm, int NumberOfTabs)
-    {
+    public PagerAdapter(FragmentManager fm, int NumberOfTabs) {
         super(fm);
         this.mNoOfTabs = NumberOfTabs;
     }
@@ -27,30 +26,22 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        switch(position)
-        {
+        switch (position) {
 
             case 0:
                 HomeTab1 homeTab1 = new HomeTab1();
                 return homeTab1;
             case 1:
-
                 SearchArtistTab2 searchArtistTab2 = new SearchArtistTab2();
                 return searchArtistTab2;
-//                MusicPreviewTab4 musicPreviewTab4 = new MusicPreviewTab4();
-//                return musicPreviewTab4;
 
             case 2:
-
-            AlbumTab3 albumTab3 = new AlbumTab3();
-            return albumTab3;
+                AlbumTab3 albumTab3 = new AlbumTab3();
+                return albumTab3;
 
             case 3:
                 MusicPreviewTab4 musicPreviewTab4 = new MusicPreviewTab4();
                 return musicPreviewTab4;
-
-//                SearchArtistTab2 searchArtistTab2 = new SearchArtistTab2();
-//                return searchArtistTab2;
 
             case 4:
                 Tab5 tab5 = new Tab5();
@@ -64,5 +55,10 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return mNoOfTabs;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return PagerAdapter.POSITION_NONE;
     }
 }
