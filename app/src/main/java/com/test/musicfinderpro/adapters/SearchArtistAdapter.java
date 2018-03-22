@@ -22,17 +22,8 @@ public class SearchArtistAdapter extends RecyclerView.Adapter<SearchArtistAdapte
 
     List<Artist> mResult = new LinkedList<>();
 
-//    Context context;
-
-//    public iSearchArtistAdapter(List<Artist> results , Context context ) {
-//        this.mResult = results;
-//        this.context = context;
-//    }
-
     @Override
     public SearchArtistAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.artist_list_layout, parent, false);
-//        return new SearchArtistAdapterViewHolder(view);
         return new SearchArtistAdapterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.artist_list_layout, parent, false));
     }
 
@@ -81,20 +72,17 @@ public class SearchArtistAdapter extends RecyclerView.Adapter<SearchArtistAdapte
 
             Intent intent = new Intent(v.getContext(), DetailActivity.class);
             intent.putExtra("image_url", response.getStrArtistThumb());
-            intent.putExtra("bio" , response.getStrBiographyEN());
-            intent.putExtra("logo" , response.getStrArtistLogo());
-            intent.putExtra("fanart" , response.getStrArtistFanart());
-            intent.putExtra("fanart2" , response.getStrArtistFanart2());
-            intent.putExtra("fanart3" , response.getStrArtistFanart3());
-
+            intent.putExtra("bio", response.getStrBiographyEN());
+            intent.putExtra("logo", response.getStrArtistLogo());
+            intent.putExtra("fanart", response.getStrArtistFanart());
+            intent.putExtra("fanart2", response.getStrArtistFanart2());
+            intent.putExtra("fanart3", response.getStrArtistFanart3());
+            intent.putExtra("banner", response.getStrArtistBanner());
 
             v.getContext().startActivity(intent);
 
             Toast.makeText(v.getContext(), mResult.get(getAdapterPosition()).getStrArtist(), Toast.LENGTH_SHORT).show();
-            //playMusic(results.get(getAdapterPosition()).getIdAlbum());
         }
-
-
 
     }
 

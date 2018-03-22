@@ -4,10 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.test.musicfinderpro.tabs.HomeTab1;
-import com.test.musicfinderpro.tabs.MusicPreviewTab4;
-import com.test.musicfinderpro.tabs.AlbumTab3;
-import com.test.musicfinderpro.tabs.SearchArtistTab2;
+import com.test.musicfinderpro.tabs.AlbumTab;
+import com.test.musicfinderpro.tabs.HomeTab;
+import com.test.musicfinderpro.tabs.MusicPreviewTab;
+import com.test.musicfinderpro.tabs.SearchArtistTab;
 import com.test.musicfinderpro.tabs.Tab5;
 
 /**
@@ -29,19 +29,19 @@ public class PagerAdapter extends FragmentPagerAdapter {
         switch (position) {
 
             case 0:
-                HomeTab1 homeTab1 = new HomeTab1();
-                return homeTab1;
+                HomeTab homeTab = new HomeTab();
+                return homeTab;
             case 1:
-                SearchArtistTab2 searchArtistTab2 = new SearchArtistTab2();
-                return searchArtistTab2;
+                SearchArtistTab searchArtistTab = new SearchArtistTab();
+                return searchArtistTab;
 
             case 2:
-                AlbumTab3 albumTab3 = new AlbumTab3();
-                return albumTab3;
+                AlbumTab albumTab = new AlbumTab();
+                return albumTab;
 
             case 3:
-                MusicPreviewTab4 musicPreviewTab4 = new MusicPreviewTab4();
-                return musicPreviewTab4;
+                MusicPreviewTab musicPreviewTab = new MusicPreviewTab();
+                return musicPreviewTab;
 
             case 4:
                 Tab5 tab5 = new Tab5();

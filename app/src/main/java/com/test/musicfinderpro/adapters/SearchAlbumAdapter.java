@@ -21,13 +21,9 @@ import java.util.List;
  * Created by Sujan on 21/03/2018.
  */
 
-public class SearchAlbumAdapter extends RecyclerView.Adapter<SearchAlbumAdapter.SearchAlbumViewHolder>{
+public class SearchAlbumAdapter extends RecyclerView.Adapter<SearchAlbumAdapter.SearchAlbumViewHolder> {
 
     List<Album> mResult;
-
-//    public SearchAlbumAdapter(List<Album> mResult) {
-//        this.mResult = mResult;
-//    }
 
     @Override
     public SearchAlbumViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -78,16 +74,8 @@ public class SearchAlbumAdapter extends RecyclerView.Adapter<SearchAlbumAdapter.
         public void onClick(View v) {
 
             Toast.makeText(v.getContext(), mResult.get(getAdapterPosition()).getStrArtist(), Toast.LENGTH_SHORT).show();
-            //playMusic(results.get(getAdapterPosition()).getIdAlbum());
         }
 
     }
 
-//    private void playMusic(String url) {
-//        Uri uri = Uri.parse(url);
-//        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//        intent.setDataAndType(uri, "audio/m4a");
-//        //intent.setDataAndType(uri, "audio/*");
-//        context.startActivity(intent);
-//    }
 }

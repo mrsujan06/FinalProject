@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -24,18 +23,18 @@ import android.widget.SearchView;
 import com.test.musicfinderpro.adapters.PagerAdapter;
 import com.test.musicfinderpro.api.ApiObservableArtistService;
 import com.test.musicfinderpro.model.ArtistResponse;
-import com.test.musicfinderpro.tabs.AlbumTab3;
-import com.test.musicfinderpro.tabs.HomeTab1;
+import com.test.musicfinderpro.tabs.AlbumTab;
+import com.test.musicfinderpro.tabs.HomeTab;
 import com.test.musicfinderpro.adapters.SearchArtistAdapter;
-import com.test.musicfinderpro.tabs.MusicPreviewTab4;
-import com.test.musicfinderpro.tabs.SearchArtistTab2;
+import com.test.musicfinderpro.tabs.MusicPreviewTab;
+import com.test.musicfinderpro.tabs.SearchArtistTab;
 import com.test.musicfinderpro.tabs.Tab5;
 
 import java.net.InetAddress;
 
 import butterknife.Unbinder;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeTab1.OnFragmentInteractionListener, AlbumTab3.OnFragmentInteractionListener, MusicPreviewTab4.OnFragmentInteractionListener, SearchArtistTab2.OnFragmentInteractionListener, Tab5.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeTab.OnFragmentInteractionListener, AlbumTab.OnFragmentInteractionListener, MusicPreviewTab.OnFragmentInteractionListener, SearchArtistTab.OnFragmentInteractionListener, Tab5.OnFragmentInteractionListener {
 
     SearchView searchView;
     RecyclerView recyclerView12;
@@ -89,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout.addTab(tabLayout.newTab().setText("Artist"));
         tabLayout.addTab(tabLayout.newTab().setText("Albums"));
         tabLayout.addTab(tabLayout.newTab().setText("Music Preview"));
-        tabLayout.addTab(tabLayout.newTab().setText("Videos"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = findViewById(R.id.pager);
@@ -101,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-
 
             }
 
@@ -139,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the HomeTab1/Up button, so long
+        // automatically handle clicks on the HomeTab/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 

@@ -1,10 +1,7 @@
 package com.test.musicfinderpro;
 
-import android.app.FragmentManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,14 +16,13 @@ import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding2.widget.RxSearchView;
 import com.test.musicfinderpro.adapters.AlbumAdapter;
 import com.test.musicfinderpro.adapters.SearchAlbumAdapter;
-import com.test.musicfinderpro.adapters.SearchArtistAdapter;
 import com.test.musicfinderpro.api.ApiObservableArtistService;
+import com.test.musicfinderpro.api.SendPushApi;
 import com.test.musicfinderpro.model.AlbumResponse;
-import com.test.musicfinderpro.model.Artist;
-import com.test.musicfinderpro.model.ArtistResponse;
-import com.test.musicfinderpro.tabs.SearchArtistTab2;
+import com.test.musicfinderpro.model.modelpush.Notification;
+import com.test.musicfinderpro.model.modelpush.PushRequestBody;
+import com.test.musicfinderpro.model.modelpush.PushResponse;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -37,18 +33,37 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailActivity extends AppCompatActivity implements Detail_Fragment.OnFragmentInteractionListener {
 
-    @BindView(R.id.imageViewArtist) ImageView imageViewArtist;
-    @BindView(R.id.fanart) ImageView imageFanArt;
-    @BindView(R.id.fanart2) ImageView imageFanArt2;
-    @BindView(R.id.fanart3) ImageView imageFanArt3;
-    @BindView(R.id.logo) ImageView imageViewLogo;
-    @BindView(R.id.recyclerViewAlbums) RecyclerView recyclerViewAlbums;
+    @BindView(R.id.imageViewArtist)
+    ImageView imageViewArtist;
+    @BindView(R.id.fanart)
+    ImageView imageFanArt;
+    @BindView(R.id.fanart2)
+    ImageView imageFanArt2;
+    @BindView(R.id.fanart3)
+    ImageView imageFanArt3;
+    @BindView(R.id.logo)
+    ImageView imageViewLogo;
+    @BindView(R.id.banner)
+    ImageView imageViewBanner;
+    @BindView(R.id.toolbar3)
+    Toolbar toolbar3;
+    @BindView(R.id.toolbar4)
+    Toolbar toolbar4;
+    @BindView(R.id.toolbar5)
+    Toolbar toolbar5;
+    @BindView(R.id.toolbar6)
+    Toolbar toolbar6;
+    @BindView(R.id.recyclerViewAlbums)
+    RecyclerView recyclerViewAlbums;
+
     ApiObservableArtistService apiObservableArtistService;
     SearchAlbumAdapter searchAlbumAdapter;
     SearchView mSearchView;
@@ -62,26 +77,39 @@ public class DetailActivity extends AppCompatActivity implements Detail_Fragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        ButterKnife.bind(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        //Toolbar3
+        toolbar3.setTitle("Bio");
+        toolbar3.setTitleTextColor(0xFFFFFFFF);
+
+        //Toolbar4
+        toolbar4.setTitle("Pictures");
+        toolbar4.setTitleTextColor(0xFFFFFFFF);
+
+        //Toolbar4
+        toolbar5.setTitle("Albums");
+        toolbar5.setTitleTextColor(0xFFFFFFFF);
 
         setSupportActionBar(toolbar);
 
-        ButterKnife.bind(this );
-        networkCallForAlbums("Simple plan");
+
+        networkCallForAlbums("Ed Sheeran");
 
 //        mSearchView = findViewById(R.id.artistSearchView);
 //        albumList = findViewById(R.id.recyclerViewAlbums);
 //        albumList.setLayoutManager(new LinearLayoutManager(this));
 //        albumList.setAdapter(searchAlbumAdapter = new SearchAlbumAdapter());
-       // networkCallForAlbums("Simple plan");
+        // networkCallForAlbums("Simple plan");
 //
 //
 //        retroCall();
 //        loadData();
 
 
-
         getIncomingIntent();
+
+
 
 
     }
@@ -92,10 +120,12 @@ public class DetailActivity extends AppCompatActivity implements Detail_Fragment
 
     }
 
-    private void getIncomingIntent(){
+    private void getIncomingIntent() {
 
-        if(getIntent().hasExtra("image_url") && getIntent().hasExtra("bio")&& getIntent().hasExtra("logo")
-                && getIntent().hasExtra("fanart") && getIntent().hasExtra("fanart2") && getIntent().hasExtra("fanart3"))
+        if (getIntent().hasExtra("image_url") && getIntent().hasExtra("bio") && getIntent().hasExtra("logo")
+                && getIntent().hasExtra("fanart") && getIntent().hasExtra("fanart2") && getIntent().hasExtra("fanart3")
+                && getIntent().hasExtra("banner"))
+
         {
 
             String imageUrl = (String) getIntent().getExtras().getSerializable("image_url");
@@ -104,14 +134,15 @@ public class DetailActivity extends AppCompatActivity implements Detail_Fragment
             String fanart = (String) getIntent().getExtras().getSerializable("fanart");
             String fanart2 = (String) getIntent().getExtras().getSerializable("fanart2");
             String fanart3 = (String) getIntent().getExtras().getSerializable("fanart3");
-            setImage(imageUrl , bio , logo  , fanart , fanart2 , fanart3);
+            String banner = (String) getIntent().getExtras().getSerializable("banner");
+            setImage(imageUrl, bio, logo, fanart, fanart2, fanart3, banner);
 
         }
 
 
     }
 
-    private void setImage(String imageUrl , String bio , String logo , String fanart , String fanart2 , String fanart3){
+    private void setImage(String imageUrl, String bio, String logo, String fanart, String fanart2, String fanart3, String banner) {
 
         //fanart
         Glide.with(this)
@@ -137,6 +168,13 @@ public class DetailActivity extends AppCompatActivity implements Detail_Fragment
                 .load(logo)
                 .into(imageViewLogo);
 
+        //banner
+        Glide.with(this)
+                .asBitmap()
+                .load(banner)
+                .into(imageViewBanner);
+
+
         //Artist Photo
         Glide.with(this)
                 .asBitmap()
@@ -151,33 +189,48 @@ public class DetailActivity extends AppCompatActivity implements Detail_Fragment
 
     //Artist Albums detail page
     public void networkCallForAlbums(String artistName) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.theaudiodb.com")
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        reqInterface3 = retrofit.create(ApiObservableArtistService.class);
-        reqInterface3.searchAlbums(artistName)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<AlbumResponse>() {
+        try {
 
-                    @Override
-                    public void accept(AlbumResponse albumResponse) throws Exception {
+            int cacheSize = 10 * 1024 * 1024; // 10 MB
+            Cache cache = new Cache(getCacheDir(), cacheSize);
 
-                        if (recyclerViewAlbums != null) {
-                            recyclerViewAlbums.setAdapter(new AlbumAdapter(albumResponse.getAlbum(), DetailActivity.this));
-                            recyclerViewAlbums.setLayoutManager(new LinearLayoutManager(DetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .cache(cache)
+                    .build();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://www.theaudiodb.com")
+                    .client(okHttpClient)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            reqInterface3 = retrofit.create(ApiObservableArtistService.class);
+            reqInterface3.searchAlbums(artistName)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<AlbumResponse>() {
+
+                        @Override
+                        public void accept(AlbumResponse albumResponse) throws Exception {
+
+                            if (recyclerViewAlbums != null) {
+                                recyclerViewAlbums.setAdapter(new AlbumAdapter(albumResponse.getAlbum(), DetailActivity.this));
+                                recyclerViewAlbums.setLayoutManager(new LinearLayoutManager(DetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                            }
+                            //   Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
+
                         }
-                        //   Toast.makeText(getActivity(), albumResponse.getAlbum().get(0).getIntYearReleased(), Toast.LENGTH_SHORT).show();
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Exception {
+                        }
+                    });
 
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                    }
-                });
+        }catch (Exception e){
+            Toast.makeText(this, "Please Check Your Internet", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -234,8 +287,35 @@ public class DetailActivity extends AppCompatActivity implements Detail_Fragment
 
     }
 
+    public void addToFavorite(View view){
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://fcm.googleapis.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+
+        String token = "eAVmuPmTLFk:APA91bGc_HOqpwVa_cIuIaLAzGXWmFIB6zr6-h5LqvZBj8mw9MxnA0-KwJUBeXLhkoGvh9vBwlwidM128ZlnzdvCZ762NlCCYIvA4FahkZrTRbGimvIQaJkwhRtEkNEWq0eQvqo_AN7M";
+        SendPushApi pushApi = retrofit.create(SendPushApi.class);
+        Notification notification = new Notification("Artist successfully added to Favorite" , "Artist Added To Favorite");
+        pushApi.sendPush(new PushRequestBody(token , notification))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<PushResponse>() {
+                    @Override
+                    public void accept(PushResponse pushResponse) throws Exception {
+                        Toast.makeText(getApplicationContext(), "Artist Added To Favorite", Toast.LENGTH_SHORT).show();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Toast.makeText(getApplicationContext(),throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
+        Toast.makeText(this, "Artist added to Favorite", Toast.LENGTH_SHORT).show();
+    }
 
 
 }

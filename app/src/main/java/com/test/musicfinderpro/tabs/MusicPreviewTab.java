@@ -1,10 +1,12 @@
 package com.test.musicfinderpro.tabs;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,9 +20,13 @@ import com.test.musicfinderpro.adapters.ArtistAdapter;
 import com.test.musicfinderpro.api.ApiObservableArtistService;
 import com.test.musicfinderpro.model.ResultResponse;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -29,12 +35,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MusicPreviewTab4.OnFragmentInteractionListener} interface
+ * {@link MusicPreviewTab.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link MusicPreviewTab4#newInstance} factory method to
+ * Use the {@link MusicPreviewTab#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MusicPreviewTab4 extends Fragment {
+public class MusicPreviewTab extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -44,14 +50,19 @@ public class MusicPreviewTab4 extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    ArtistAdapter artistAdapter;
+    @BindView(R.id.recyclerView10)
     RecyclerView recyclerView10;
+    @BindView(R.id.swipe2Refresh)
+    SwipeRefreshLayout strl;
+
     ApiObservableArtistService reqInterface;
+    ArtistAdapter artistAdapter;
+
     View view;
 
     private OnFragmentInteractionListener mListener;
 
-    public MusicPreviewTab4() {
+    public MusicPreviewTab() {
         // Required empty public constructor
     }
 
@@ -61,11 +72,11 @@ public class MusicPreviewTab4 extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MusicPreviewTab4.
+     * @return A new instance of fragment MusicPreviewTab.
      */
     // TODO: Rename and change types and number of parameters
-    public static MusicPreviewTab4 newInstance(String param1, String param2) {
-        MusicPreviewTab4 fragment = new MusicPreviewTab4();
+    public static MusicPreviewTab newInstance(String param1, String param2) {
+        MusicPreviewTab fragment = new MusicPreviewTab();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -87,16 +98,42 @@ public class MusicPreviewTab4 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_music_preview_tab4, container, false);
-        recyclerView10 = view.findViewById(R.id.recyclerView10);
-
+        ButterKnife.bind(this, view);
 
         recyclerView10.setAdapter(artistAdapter);
-
         networkCallSearchArtist();
+
+        /**Checking network**/
+        if (!isNetworkAvailable()) {
+            Toast.makeText(getActivity(), "Network not available", Toast.LENGTH_SHORT).show();
+        }
+
+        strl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                strl.setRefreshing(true);
+                networkCallSearchArtist();
+
+
+                strl.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        networkCallSearchArtist();
+                    }
+                }, 300);
+                dotheUpdate();
+            }
+        });
+
+        //   networkCallSearchArtist();
         return view;
-
-
     }
+
+    private void dotheUpdate() {
+        strl.setRefreshing(false);
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -137,9 +174,22 @@ public class MusicPreviewTab4 extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+    /**
+     * call network and Artist name , Album name will be displayed in recyclerView
+     * Data can be viewed offline
+     */
     public void networkCallSearchArtist() {
+
+        int cacheSize = 10 * 1024 * 1024; // 10 MB
+        Cache cache = new Cache(getActivity().getCacheDir(), cacheSize);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .cache(cache)
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://itunes.apple.com/")
+                .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -161,8 +211,18 @@ public class MusicPreviewTab4 extends Fragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Please check your network", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
+    /**
+     *Checks phone network connections
+     */
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 }

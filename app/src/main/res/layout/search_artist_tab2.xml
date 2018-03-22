@@ -1,38 +1,48 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe2Refresh3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundFragment"
-    tools:context="com.test.musicfinderpro.tabs.SearchArtistTab2">
+    android:orientation="horizontal">
 
-    <!-- TODO: Update blank fragment layout -->
 
-    <SearchView
-        android:id="@+id/artistSearchView"
-        android:layout_width="0dp"
-        android:layout_height="65dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/black"
-        android:backgroundTint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/artistList"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundFragment"
+        tools:context="com.test.musicfinderpro.tabs.SearchArtistTab">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/artistList"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/artistSearchView" />
-</android.support.constraint.ConstraintLayout>
+        <!-- TODO: Update blank fragment layout -->
+
+        <SearchView
+            android:id="@+id/artistSearchView"
+            android:layout_width="0dp"
+            android:layout_height="65dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:autofillHints="Search Artist"
+            android:background="@color/black"
+            android:backgroundTint="@color/black"
+            android:queryHint="Search Artist"
+            app:layout_constraintBottom_toTopOf="@+id/artistList"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/artistList"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/artistSearchView" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

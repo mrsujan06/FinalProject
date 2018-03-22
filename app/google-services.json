@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "354249902249",
+    "firebase_url": "https://music-finder-pro.firebaseio.com",
+    "project_id": "music-finder-pro",
+    "storage_bucket": "music-finder-pro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354249902249:android:9567e94896cc6684",
+        "android_client_info": {
+          "package_name": "com.test.musicfinderpro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354249902249-mlnk9clirinr361pfmmtvpj18etva80v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg0jfjGvaOaUcrv0A-09sYByKYq2rmuvc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

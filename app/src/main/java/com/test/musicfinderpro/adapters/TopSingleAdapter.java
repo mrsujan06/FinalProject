@@ -62,8 +62,6 @@ public class TopSingleAdapter extends RecyclerView.Adapter<TopSingleAdapter.TopS
                 super(itemView);
                 pimageView2 = itemView.findViewById(R.id.pimageView2);
                 itemView.setOnClickListener(this);
-
-
             }
 
             void bind(int position) {
@@ -72,8 +70,7 @@ public class TopSingleAdapter extends RecyclerView.Adapter<TopSingleAdapter.TopS
 
             @Override
             public void onClick(View v) {
-
-
+                Toast.makeText(v.getContext(), results.get(getAdapterPosition()).getStrAlbum(), Toast.LENGTH_SHORT).show();
                  //playMusic(results.get(getAdapterPosition()).getIdAlbum());
             }
 

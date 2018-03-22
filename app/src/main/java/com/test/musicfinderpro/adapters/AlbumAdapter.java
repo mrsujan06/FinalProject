@@ -72,7 +72,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
         @Override
         public void onClick(View v) {
 
-            Toast.makeText(v.getContext(), results.get(getAdapterPosition()).getStrArtist(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(v.getContext(), results.get(getAdapterPosition()).getStrAlbum(), Toast.LENGTH_SHORT).show();
             //playMusic(results.get(getAdapterPosition()).getIdAlbum());
         }
 
